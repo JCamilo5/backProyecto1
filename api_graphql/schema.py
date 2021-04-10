@@ -8,7 +8,7 @@ from .data.courier.types import CourierNode
 from .data.product.types import ProductNode
 from .data.delivery.types import DeliveryNode
 from .data.enterprise.types import EnterpriseNode
-from api_graphql.data.client.mutations import CreateClient, UpdateClient
+from api_graphql.data.client.mutations import CreateClient, UpdateClient, DeleteClient
 from api_graphql.data.enterprise.mutations import CreateEnterprise, UpdateEnterprise, DeleteEnterprise
 
 # Schema definition
@@ -34,6 +34,7 @@ class Mutation(ObjectType):
     """Endpoint para crear, actualizar y eliminar registros"""
     create_client = CreateClient.Field()
     update_client = UpdateClient.Field()
+    delete_client = DeleteClient.Field()
 
     create_enterprise = CreateEnterprise.Field()
     update_enterprise = UpdateEnterprise.Field()
