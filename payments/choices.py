@@ -3,6 +3,7 @@
 
 
 PAYMENT_TYPE_CHOICES = (
-    ('credit card', 'Credit Card'),
-    ('debit card', 'Debit Card')
+    ('efectivo', 'Efectivo'),
+    ('tarjeta de crédito', 'Tarjeta de Crédito'),
+    ('tarjeta de débito', 'Tarjeta de Débito')
 )
