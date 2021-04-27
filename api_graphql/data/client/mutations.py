@@ -3,7 +3,7 @@ from graphene import Mutation
 from graphene.types.scalars import ID
 from graphql_relay.node.node import from_global_id
 
-from users.models import Client
+from users.models import Client, Contact
 from api_graphql.data.client.types import ClientNode
 from api_graphql.data.client.inputs import CreateClientInput
 from api_graphql.data.client.inputs import UpdateClientInput
@@ -22,8 +22,17 @@ class CreateClient(Mutation):
         input = CreateClientInput(required=True)
 
     def mutate(self, info, input: CreateClientInput):
-        client = Client.objects.create(**vars(input))
+        input = vars(input)
+        client = Client.objects.create(
+            email=input.get('email'),
+            password=input.get('password')
+        )
+       
 
+        input['user'] = client
+        contact = Contact(**input)
+        client.save()
+        contact.save()
         return CreateClient(client=client)
 
 

@@ -14,6 +14,11 @@ class CreateClientInput(InputObjectType):
 
     email = String(required=True)
     password = String(required=True)
+    names = String(required=True)
+    lastnames = String(required=True)
+    location = String(required=True)
+    telephone = String(required=True)
+    license_plate = String()
 
 
 class UpdateClientInput(InputObjectType):
@@ -25,3 +30,8 @@ class UpdateClientInput(InputObjectType):
     id = ID(required=True)
     password = String()
     is_active = Boolean()
+    names = String(required=True)
+    lastnames = String(required=True)
+    location = String(required=True)
+    telephone = String(required=True)
+    license_plate = String()
