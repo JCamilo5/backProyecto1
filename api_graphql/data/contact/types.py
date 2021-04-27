@@ -23,8 +23,7 @@ class ContactNode(DjangoObjectType):
             'telephone': ['exact', 'icontains', 'istartswith'],
             'license_plate': ['exact', 'icontains', 'istartswith'],
             'created': ['exact'],
-            'updated': ['exact'],
-            'user__id': ['exact'],
+            'updated': ['exact']
         }
         interfaces = (Node, )
         connection_class = TotalCountConnection

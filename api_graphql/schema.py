@@ -71,6 +71,8 @@ class Mutation(ObjectType):
     delete_enterprise = DeleteEnterprise.Field()
 
     create_client = CreateClient.Field()
+    update_client = UpdateClient.Field()
+
     create_contact = CreateContact.Field()
     update_contact = UpdateContact.Field()
-    update_client = UpdateClient.Field()
+    

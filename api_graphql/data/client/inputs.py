@@ -21,7 +21,7 @@ class UpdateClientInput(InputObjectType):
     Clase que encapsula los datos necesarios
     para la actualización de cliente
     """
+    
     id = ID(required=True)
-    email = String()
     password = String()
     is_active = Boolean()
