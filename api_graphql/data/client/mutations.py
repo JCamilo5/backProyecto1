@@ -23,9 +23,9 @@ class CreateClient(Mutation):
 
     def mutate(self, info, input: CreateClientInput):
         input = vars(input)
-        client = Client.objects.create(
-            email=input.get('email'),
-            password=input.get('password')
+        client = Client(
+            email=input.pop('email'),
+            password=input.pop('password')
         )
        
 
