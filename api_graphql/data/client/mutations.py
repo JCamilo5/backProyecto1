@@ -1,3 +1,4 @@
+from api_graphql.data.contact.inputs import UpdateContactInput
 from graphene import Field
 from graphene import Mutation
 from graphene.types.scalars import ID
@@ -27,7 +28,6 @@ class CreateClient(Mutation):
             email=input.pop('email'),
             password=input.pop('password')
         )
-       
 
         input['user'] = client
         contact = Contact(**input)
@@ -53,3 +53,4 @@ class UpdateClient(Mutation):
         client = Client.objects.get(pk=input.get('id'))
 
         return UpdateClient(client=client)
+
