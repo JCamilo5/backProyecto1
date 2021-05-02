@@ -13,7 +13,7 @@ class CreateClientInput(InputObjectType):
     """
 
     email = String(required=True)
-    password = String()
+    password = String(required=True)
     names = String(required=True)
     lastnames = String(required=True)
     location = String(required=True)
