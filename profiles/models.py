@@ -9,6 +9,7 @@ from django.db.models import (
 from django.contrib.auth.models import AbstractBaseUser, User
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
+#from django.http import request
 
 
 
@@ -27,8 +28,7 @@ class UserProfileManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email)
         user.set_password(password)
-        user.save(using=self._db)
-        
+        user.save(using=self._db)     
         return user
 
     def create_superuser(self, email: str, password: str) -> User:
