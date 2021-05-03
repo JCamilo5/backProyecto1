@@ -2,7 +2,14 @@ from django.db import models
 from django.conf import settings
 from django.db.models.query import QuerySet
 from profiles.models import UserProfile
+from django.http import HttpRequest
+from django.core.mail import EmailMessage
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.contrib.sites.shortcuts import get_current_site
 
+
+from .views import signup
 # Create your models here.
 
 
@@ -32,10 +39,10 @@ class Client(UserProfile):
 
     def save(self, *args, **kwargs) -> None:
         """Función que guarda un usuario tipo cliente"""
-
+        signup(self)
         if not self.pk:
             self.type = UserProfile.Types.CLIENT
-
+            
         return super().save(*args, **kwargs)
 
 
@@ -111,7 +118,6 @@ class Courier(UserProfile):
 
         if not self.pk:
             self.type = UserProfile.Types.COURIER
-
         return super().save(*args, **kwargs)
 
 
