@@ -30,3 +30,11 @@ class UpdateClientInput(InputObjectType):
     id = ID(required=True)
     password = String()
     is_active = Boolean()
+
+class RememberPasswordInput(String):
+    """
+    Clase que encapsula los datos necesarios
+    para la actualización de cliente
+    """
+    
+    email = String(required=True)
