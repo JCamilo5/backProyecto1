@@ -22,7 +22,8 @@ from .data.enterprise.mutations import (
 )
 from .data.client.mutations import (
     CreateClient,
-    UpdateClient
+    UpdateClient,
+    RestorePasswordClient
 )
 from .data.contact.mutations import (
     CreateContact,
@@ -72,6 +73,7 @@ class Mutation(ObjectType):
 
     create_client = CreateClient.Field()
     update_client = UpdateClient.Field()
+    restorepasswordclient = RestorePasswordClient.Field()
 
     create_contact = CreateContact.Field()
     update_contact = UpdateContact.Field()

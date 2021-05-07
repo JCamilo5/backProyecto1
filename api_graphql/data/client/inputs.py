@@ -30,3 +30,6 @@ class UpdateClientInput(InputObjectType):
     id = ID(required=True)
     password = String()
     is_active = Boolean()
+
+class RestorePasswordClientInput (String):
+    email = String(required=True)

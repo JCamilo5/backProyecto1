@@ -5,8 +5,10 @@ from graphene.types.scalars import ID
 from graphql_relay.node.node import from_global_id
 
 from users.models import Client, Contact
+from users.views import restorepassword, signup
 from api_graphql.data.client.types import ClientNode
 from api_graphql.data.client.inputs import CreateClientInput
+from api_graphql.data.client.inputs import RestorePasswordClientInput
 from api_graphql.data.client.inputs import UpdateClientInput
 from api_graphql.utils import delete_attributes_none
 from api_graphql.utils import transform_global_ids
@@ -31,7 +33,11 @@ class CreateClient(Mutation):
 
         input['user'] = client
         contact = Contact(**input)
+        
+        
         client.save()
+        print("Se envia", client.pk)
+        signup(client)
         contact.save()
         return CreateClient(client=client)
 
@@ -53,4 +59,18 @@ class UpdateClient(Mutation):
         client = Client.objects.get(pk=input.get('id'))
 
         return UpdateClient(client=client)
+
+
+class RestorePasswordClient (Mutation):
+    """Clase para actualizar contraseña"""
+
+    client = Field(ClientNode)
+
+    class Arguments:
+        input = RestorePasswordClientInput(required=True)
+
+    def mutate(self, info, input):
+        client = Client.objects.get(email=input)
+        restorepassword(client)
+        return RestorePasswordClient(client=client)
 
