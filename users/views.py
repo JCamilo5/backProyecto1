@@ -49,13 +49,13 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return redirect('http://localhost:8080/login')
+        return redirect('http://localhost:8081/login')
     else:
         return redirect('')
 
 def remember(self):
     user = self
-    current_site = 'localhost:8080'
+    current_site = 'localhost:8081'
     email_body = {
         'user': user,
         'domain': current_site,
@@ -77,11 +77,13 @@ def remember(self):
 def activateRe(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
+        cad = "UserNode:"+uid
+        cad = urlsafe_base64_encode(force_bytes(cad))
         user = UserProfile.objects.get(pk = uid)
     except(TypeError, ValueError, OverflowError, UserProfile.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
-        return redirect('http://localhost:8080/Password/Reset'+'/'+uidb64)
+        return redirect('http://localhost:8081/Password/Reset'+'/'+cad)
     
     else:
-        return redirect('http://localhost:8080/login')
+        return redirect('http://localhost:8081/login')

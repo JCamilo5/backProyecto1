@@ -31,7 +31,7 @@ class UpdateClientInput(InputObjectType):
     password = String()
     is_active = Boolean()
 
-class RememberPasswordInput(InputObjectType):
+class RememberPasswordInput(String):
     """
     Clase que encapsula los datos necesarios
     para la actualización de cliente
