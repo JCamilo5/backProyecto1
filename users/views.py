@@ -59,12 +59,12 @@ def remember(self):
     email_body = {
         'user': user,
         'domain': current_site,
-        'uid': urlsafe_base64_encode(force_bytes(user.email)),
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
     }
     link = reverse('activateRe', kwargs={
                     'uidb64': email_body['uid'], 'token': email_body['token']})
-    email_subject = ''
+    email_subject = 'Restablecer contraseña'
     activate_url = 'http://127.0.0.1:8000'+link
     email = EmailMessage(
         email_subject,
@@ -76,11 +76,12 @@ def remember(self):
 
 def activateRe(request, uidb64, token):
     try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = UserProfile.objects.get(email = uid)
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = UserProfile.objects.get(pk = uid)
     except(TypeError, ValueError, OverflowError, UserProfile.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
-        return redirect('http://localhost:8080/example-list')
+        return redirect('http://localhost:8080/Password/Reset'+'/'+uidb64)
+    
     else:
         return redirect('http://localhost:8080/login')

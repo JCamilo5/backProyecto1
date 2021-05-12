@@ -63,6 +63,6 @@ class RememberPasswordClient(Mutation):
         input = RememberPasswordInput(required=True)
 
     def mutate(self, info, input):
-        client = Client.objects.get(email=input)
+        client = Client.objects.get(email=input.get('email'))
         remember(client)
         return RememberPasswordClient(client=client)
