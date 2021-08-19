@@ -14,6 +14,7 @@ class CreateClientInput(InputObjectType):
 
     email = String(required=True)
     password = String(required=True)
+    is_alternative = Boolean(required=True)
     names = String(required=True)
     lastnames = String(required=True)
     location = String(required=True)

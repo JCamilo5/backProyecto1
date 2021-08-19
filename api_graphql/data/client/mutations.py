@@ -26,7 +26,8 @@ class CreateClient(Mutation):
         input = vars(input)
         client = Client(
             email=input.pop('email'),
-            password=input.pop('password')
+            password=input.pop('password'),
+            is_alternative = input.pop('is_alternative')
         )
         input['user'] = client
         contact = Contact(**input)
