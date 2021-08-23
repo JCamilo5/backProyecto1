@@ -58,6 +58,10 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         blank=True,
         help_text='tipo de usuario'
     )
+    is_alternative = BooleanField(
+        default=False,
+        help_text='tipo de ingreso del usuario'
+    )
     is_active = BooleanField(
         default=False,
         help_text='usuario activo'

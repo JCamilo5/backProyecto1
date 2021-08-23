@@ -24,35 +24,66 @@ def signup(self):
     email_body = {
         'user': user,
         'domain': current_site,
-        'uid': urlsafe_base64_encode(force_bytes(user.email)),
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
     }
     link = reverse('activate', kwargs={
                     'uidb64': email_body['uid'], 'token': email_body['token']})
-    email_subject = 'Activate your account'
+    email_subject = 'Activa tu cuenta'
     activate_url = 'http://127.0.0.1:8000'+link
     email = EmailMessage(
         email_subject,
-        'Hi '+user.email + ', Please the link below to activate your account \n'+activate_url,
+        'Hola '+user.email + ', Por favor, dar click en el enlace para activar su cuenta \n'+activate_url,
         'noreply@semycolon.com',
         [user.email],
     )
     email.send()
-    return HttpResponse('Please confirm your email address to complete the registration') 
 
 def activate(request, uidb64, token):
+    print("Token que llega", token)
     try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = UserProfile.objects.get(email = uid)
-        user.is_active = True
-        user.save()
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = UserProfile.objects.get(pk = uid)   
     except(TypeError, ValueError, OverflowError, UserProfile.DoesNotExist):
         user = None
-    return redirect('http://localhost:8080/login')
-    '''
-    if user is not None and default_token_generator.check_token(user, token):
-        
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return redirect('http://localhost:8080/login')
     else:
-        return HttpResponse('')
-    '''
+        return redirect('')
+
+def remember(self):
+    user = self
+    current_site = 'localhost:8080'
+    email_body = {
+        'user': user,
+        'domain': current_site,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+    }
+    link = reverse('activateRe', kwargs={
+                    'uidb64': email_body['uid'], 'token': email_body['token']})
+    email_subject = 'Restablecer contraseña'
+    activate_url = 'http://127.0.0.1:8000'+link
+    email = EmailMessage(
+        email_subject,
+        'Hola '+user.email + ', Por favor, dar click en el enlace para restaurar tu contraseña\n'+activate_url,
+        'noreply@semycolon.com',
+        [user.email],
+    )
+    email.send()
+
+def activateRe(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        cad = "UserNode:"+uid
+        cad = urlsafe_base64_encode(force_bytes(cad))
+        user = UserProfile.objects.get(pk = uid)
+    except(TypeError, ValueError, OverflowError, UserProfile.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        return redirect('http://localhost:8080/Password/Reset'+'/'+cad)
+    
+    else:
+        return redirect('http://localhost:8080/login')

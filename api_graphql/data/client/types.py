@@ -19,6 +19,7 @@ class ClientNode(DjangoObjectType):
         filter_fields = {
             'email': ['exact', 'icontains', 'istartswith'],
             'password': ['exact', 'icontains', 'istartswith'],
+            'is_alternative': ['exact', 'icontains', 'istartswith'],
             'last_login': ['exact'],
             'is_active': ['exact', 'icontains', 'istartswith'],
             'is_staff': ['exact', 'icontains', 'istartswith']

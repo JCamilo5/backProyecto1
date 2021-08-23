@@ -14,6 +14,7 @@ class CreateClientInput(InputObjectType):
 
     email = String(required=True)
     password = String(required=True)
+    is_alternative = Boolean(required=True)
     names = String(required=True)
     lastnames = String(required=True)
     location = String(required=True)
@@ -30,3 +31,11 @@ class UpdateClientInput(InputObjectType):
     id = ID(required=True)
     password = String()
     is_active = Boolean()
+
+class RememberPasswordInput(String):
+    """
+    Clase que encapsula los datos necesarios
+    para la actualización de cliente
+    """
+    
+    email = String(required=True)

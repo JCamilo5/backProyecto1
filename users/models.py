@@ -39,7 +39,7 @@ class Client(UserProfile):
 
     def save(self, *args, **kwargs) -> None:
         """Función que guarda un usuario tipo cliente"""
-        signup(self)
+        #signup(self)
         if not self.pk:
             self.type = UserProfile.Types.CLIENT
             
