@@ -72,6 +72,6 @@ class RememberPasswordClient(Mutation):
 
     def mutate(self, info, input):
         client = Client.objects.get(email=input)
-        
-        remember(client)
+        if (client.is_alternative==False):
+            remember(client)
         return RememberPasswordClient(client=client)
