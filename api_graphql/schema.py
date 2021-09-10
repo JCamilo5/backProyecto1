@@ -15,6 +15,8 @@ from .data.manager.types import ManagerNode
 from .data.delivery.types import DeliveryNode
 from .data.enterprise.types import EnterpriseNode
 from .data.management.types import ManagementNode
+from .data.review.types import ReviewNode
+from .data.report.types import ReportNode
 from .data.enterprise.mutations import (
     CreateEnterprise,
     UpdateEnterprise,
@@ -25,11 +27,32 @@ from .data.client.mutations import (
     UpdateClient,
     RememberPasswordClient
 )
+from .data.courier.mutations import (
+    CreateCourier,
+    UpdateCourier
+)
 from .data.contact.mutations import (
     CreateContact,
     UpdateContact
 )
 
+from .data.detail.mutations import (
+    CreateDetail,
+    UpdateDetail,
+    DeleteDetail
+)
+from .data.order.mutations import(
+    CreateOrder,
+    UpdateOrder,
+    DeleteOrder
+)
+from .data.review.mutations import(
+    CreateReview,
+    UpdateReview
+)
+from .data.report.mutations import(
+    CreateReport
+)
 
 # Schema definition
 
@@ -48,8 +71,10 @@ class Query(ObjectType):
     detail = Node.Field(DetailNode)
     user = Node.Field(UserNode)
     management = Node.Field(ManagementNode)
-    payment = Node.Field(PaymentNode) 
-    
+    payment = Node.Field(PaymentNode)
+    review = Node.Field(ReviewNode)
+    report = Node.Field(ReportNode)
+
     all_deliveries = DjangoFilterConnectionField(DeliveryNode)
     all_couriers = DjangoFilterConnectionField(CourierNode)
     all_clients = DjangoFilterConnectionField(ClientNode)
@@ -61,8 +86,9 @@ class Query(ObjectType):
     all_details = DjangoFilterConnectionField(DetailNode)
     all_users = DjangoFilterConnectionField(UserNode)
     all_management = DjangoFilterConnectionField(ManagementNode)
-    all_payments = DjangoFilterConnectionField(PaymentNode) 
-
+    all_payments = DjangoFilterConnectionField(PaymentNode)
+    all_reviews = DjangoFilterConnectionField(ReviewNode)
+    all_reports = DjangoFilterConnectionField(ReportNode)
 
 class Mutation(ObjectType):
     """Endpoint para crear, actualizar y eliminar registros"""
@@ -74,6 +100,22 @@ class Mutation(ObjectType):
     create_client = CreateClient.Field()
     update_client = UpdateClient.Field()
     remember_client = RememberPasswordClient.Field()
+    
+    create_courier = CreateCourier.Field()
+    update_courier = UpdateCourier.Field()
+
     create_contact = CreateContact.Field()
     update_contact = UpdateContact.Field()
-    
+
+    create_detail = CreateDetail.Field()
+    update_detail = UpdateDetail.Field()
+    delete_detail = DeleteDetail.Field()
+
+    create_order = CreateOrder.Field()
+    update_order = UpdateOrder.Field()
+    delete_order = DeleteOrder.Field()
+
+    create_review = CreateReview.Field()
+    update_review = UpdateReview.Field()
+
+    create_report = CreateReport.Field()

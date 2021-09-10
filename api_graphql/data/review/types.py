@@ -17,15 +17,15 @@ class ReviewNode(DjangoObjectType):
     class Meta:
         model = Review
         filter_fields = {
-            'quality_service': ['exact', 'icontains', 'istartswith'],
-            'presentation': ['exact', 'icontains', 'istartswith'],
-            'preparation': ['exact', 'icontains', 'istartswith'],
-            'ingredients': ['exact', 'icontains', 'istartswith'],
-            'price': ['exact', 'icontains', 'istartswith'],
-            'textures': ['exact', 'icontains', 'istartswith'],
-            'cooking_point': ['exact', 'icontains', 'istartswith'],
-            'comments': ['exact', 'icontains', 'istartswith'],
-            'date': ['exact']
+            "quality_service": ["exact", "icontains", "istartswith"],
+            "presentation": ["exact", "icontains", "istartswith"],
+            "preparation": ["exact", "icontains", "istartswith"],
+            "ingredients": ["exact", "icontains", "istartswith"],
+            "price": ["exact", "icontains", "istartswith"],
+            "textures": ["exact", "icontains", "istartswith"],
+            "cooking_point": ["exact", "icontains", "istartswith"],
+            "comments": ["exact", "icontains", "istartswith"],
+            "date": ["exact"],
         }
-        interfaces = (Node, )
+        interfaces = (Node,)
         connection_class = TotalCountConnection

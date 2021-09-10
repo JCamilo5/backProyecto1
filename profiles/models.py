@@ -12,7 +12,6 @@ from django.contrib.auth.models import BaseUserManager
 #from django.http import request
 
 
-
 # Create your models here.
 
 
@@ -24,11 +23,10 @@ class UserProfileManager(BaseUserManager):
 
         if not email:
             raise ValueError('User must have an email address')
-        print("-----------------Antes de guardar usuarios")
         email = self.normalize_email(email)
         user = self.model(email=email)
         user.set_password(password)
-        user.save(using=self._db)     
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, email: str, password: str) -> User:
@@ -63,12 +61,16 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         help_text='tipo de ingreso del usuario'
     )
     is_active = BooleanField(
-        default=False,
+        default=True,
         help_text='usuario activo'
     )
     is_staff = BooleanField(
         default=False,
         help_text='personal de administrador de Django'
+    )
+    is_available = BooleanField(
+        default=True,
+        help_text='disponibilidad del mensajero'
     )
 
     objects = UserProfileManager()

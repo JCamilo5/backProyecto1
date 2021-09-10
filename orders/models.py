@@ -1,16 +1,18 @@
 from django.db.models import (
     Model,
     DateTimeField,
-    BooleanField,
     PositiveSmallIntegerField,
     CharField,
     ForeignKey,
     ManyToManyField,
     CASCADE
 )
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from products.models import Product
 from users.models import Client
+from .choices import STATUS_CHOICES, NEW
 
 # Create your models here.
 
@@ -19,9 +21,9 @@ class Order(Model):
     """"Clase que representa una Orden de Pedido"""
 
     date = DateTimeField(auto_now_add=True, help_text='fecha')
-    status = BooleanField(default=True, help_text='estado')
+    status = CharField(max_length=15, choices=STATUS_CHOICES, default=NEW, help_text='estado')
     estimated_time = PositiveSmallIntegerField(help_text='tiempo estimado')
-    location = CharField(max_length=45, help_text='ubicación')
+    location = CharField(max_length=250, help_text='ubicación')
 
     # Relaciones
     client = ForeignKey(
@@ -69,6 +71,11 @@ class Detail(Model):
         help_text='order de pedido'
     )
 
+    def clean(self) -> None:
+        if self.quantity == 0:
+            raise ValidationError(_('No se puede guardar 0'))
+        return super().clean()
+
     def __str__(self) -> str:
         """
         Función que representa al objeto
@@ -76,3 +83,13 @@ class Detail(Model):
         """
 
         return str(self.quantity)
+
+class Report(Model):
+    """
+    Clase que representa el los informes de
+    los Pedidos
+    """
+
+    id_interprise = CharField(max_length=250, help_text='id interprise')
+    report_type = CharField(max_length=250, help_text='tipo de reporte')
+    report_information = CharField(max_length=250, help_text='report_information')

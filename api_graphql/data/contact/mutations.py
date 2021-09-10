@@ -1,6 +1,5 @@
 from graphene import Field
 from graphene import Mutation
-from graphene.types.scalars import ID
 
 from users.models import Contact
 from api_graphql.data.contact.types import ContactNode
@@ -8,7 +7,6 @@ from api_graphql.data.contact.inputs import CreateContactInput
 from api_graphql.data.contact.inputs import UpdateContactInput
 from api_graphql.utils import delete_attributes_none
 from api_graphql.utils import transform_global_ids
-from graphql_relay.node.node import from_global_id
 
 # Create your mutations here
 

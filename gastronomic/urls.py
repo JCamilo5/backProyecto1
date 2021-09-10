@@ -25,5 +25,4 @@ urlpatterns = [
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
     path('activate/<uidb64>/<token>',activate, name='activate'),
     path('activateRe/<uidb64>/<token>',activateRe, name='activateRe'),
-    ] 
-
+]

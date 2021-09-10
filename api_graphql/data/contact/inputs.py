@@ -1,8 +1,6 @@
 from graphene import InputObjectType
 from graphene.types.scalars import ID
 from graphene.types.scalars import String
-from graphene.types.scalars import Boolean
-from graphene.types.datetime import DateTime
 
 # Create your inputs types here.
 

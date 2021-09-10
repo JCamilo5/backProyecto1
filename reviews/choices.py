@@ -2,7 +2,7 @@
 
 
 REVIEW_CHOICES = (
-    ('good', 'Good'),
+    ('bueno', 'Bueno'), #se guarda el de la izquierda, se muestra el de la derecha
     ('regular', 'Regular'),
-    ('bad', 'Bad')
+    ('malo', 'Malo')
 )

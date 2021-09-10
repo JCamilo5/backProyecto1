@@ -1,8 +1,6 @@
-from api_graphql.data.contact.inputs import UpdateContactInput
 from graphene import Field
 from graphene import Mutation
 from graphene.types.scalars import ID
-from graphql_relay.node.node import from_global_id
 
 from users.models import Client, Contact
 from api_graphql.data.client.types import ClientNode
@@ -31,12 +29,12 @@ class CreateClient(Mutation):
         )
         input['user'] = client
         contact = Contact(**input)
+        client.is_active=False
         client.save()
         contact.save()
         if(client.password != 'deliver-food-2021'):
-            signup(client)
+            signup(client, info.context)
         else:
-            
             client = Client.objects.get(email=client.email)
             client.is_active=True
             client.save()
@@ -73,5 +71,5 @@ class RememberPasswordClient(Mutation):
     def mutate(self, info, input):
         client = Client.objects.get(email=input)
         if (client.is_alternative==False):
-            remember(client)
+            remember(client, info.context)
         return RememberPasswordClient(client=client)

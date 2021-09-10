@@ -22,9 +22,9 @@ class Enterprise(Model):
         blank=True,
         help_text='reseña historica'
     )
-    location = CharField(max_length=45, help_text='ubicación')
+    location = CharField(max_length=250, help_text='ubicación')
     business_hours = CharField(
-        max_length=45,
+        max_length=500,
         null=True,
         blank=True,
         help_text='horario de atención'

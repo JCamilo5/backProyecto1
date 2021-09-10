@@ -42,4 +42,4 @@ class Delivery(Model):
         cuando es recuperado
         """
 
-        return self.status
+        return self.delivery_time.strftime('%a %H:%M  %d/%m/%y')

@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'graphene_django',
     'corsheaders',
-    'django.contrib.sites',
 
     'deliveries.apps.DeliveriesConfig',
     'enterprises.apps.EnterprisesConfig',
@@ -174,5 +173,3 @@ EMAIL_HOST_USER = 'deliveryfoodpopayan@gmail.com'
 EMAIL_PORT = 465  
 EMAIL_USE_SSL = True  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-SITE_ID = 1
