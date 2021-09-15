@@ -1,6 +1,14 @@
-from graphene import ObjectType
-from graphene.relay import Node
+from typing_extensions import Required
+import graphene
+from api_graphql.data.report.report import Report
+from datetime import timedelta
+import datetime
+import graphql
 
+from payments.models import Payment
+from graphene import ObjectType
+
+from graphene.relay import Node
 from graphene_django.filter import DjangoFilterConnectionField
 
 from .data.user.types import UserNode
@@ -16,7 +24,6 @@ from .data.delivery.types import DeliveryNode
 from .data.enterprise.types import EnterpriseNode
 from .data.management.types import ManagementNode
 from .data.review.types import ReviewNode
-from .data.report.types import ReportNode
 from .data.enterprise.mutations import (
     CreateEnterprise,
     UpdateEnterprise,
@@ -50,16 +57,33 @@ from .data.review.mutations import(
     CreateReview,
     UpdateReview
 )
-from .data.report.mutations import(
-    CreateReport
-)
 
-# Schema definition
+# Schema definition  # dictionary value
+class Query(graphene.ObjectType):
+    questionnaire = graphene.Field(Report, enterprise=graphene.String())
+    def resolve_questionnaire(self, info: graphql.ResolveInfo,enterprise):
+            tipo=enterprise
 
+            fechaActual= datetime.now()
+            #reporte diario
+            if(tipo==1):
+                fechaInicio=fechaActual-timedelta(hours=24)
+            elif(tipo ==2):
+                #reporte semanal
+                fechaInicio=fechaActual-timedelta(days=7)
+            elif(tipo ==3):
+                #reporte mensual
+                fechaInicio=fechaActual-timedelta(days=30)
+            pagos=Payment.objects.filter(delivery__delivery_time__range=[fechaInicio,fechaActual],delivery__order__details__product__enterprise='2').values('delivery__order__details__product__enterprise__name' ,'delivery__delivery_time','payment_value')
+            
+            sections_as_obj_list = [] # Used to return a list of Section types
+            # Create a new Section object for each item and append it to list
+            for pago in pagos: # Use sections.iteritems() in Python2
+                section = Report(pago.get('delivery__order__details__product__enterprise__name'), pago.get('delivery__delivery_time'),pago.get('payment_value')) # Creates a section object where key=key and header=value
+                sections_as_obj_list.append(section)
 
-class Query(ObjectType):
-    """Endpoint para consultar registros"""
-
+            # return sections
+            return sections_as_obj_list
     delivery = Node.Field(DeliveryNode)
     courier = Node.Field(CourierNode)
     client = Node.Field(ClientNode)
@@ -73,7 +97,6 @@ class Query(ObjectType):
     management = Node.Field(ManagementNode)
     payment = Node.Field(PaymentNode)
     review = Node.Field(ReviewNode)
-    report = Node.Field(ReportNode)
 
     all_deliveries = DjangoFilterConnectionField(DeliveryNode)
     all_couriers = DjangoFilterConnectionField(CourierNode)
@@ -88,7 +111,7 @@ class Query(ObjectType):
     all_management = DjangoFilterConnectionField(ManagementNode)
     all_payments = DjangoFilterConnectionField(PaymentNode)
     all_reviews = DjangoFilterConnectionField(ReviewNode)
-    all_reports = DjangoFilterConnectionField(ReportNode)
+    
 
 class Mutation(ObjectType):
     """Endpoint para crear, actualizar y eliminar registros"""
@@ -118,4 +141,3 @@ class Mutation(ObjectType):
     create_review = CreateReview.Field()
     update_review = UpdateReview.Field()
 
-    create_report = CreateReport.Field()

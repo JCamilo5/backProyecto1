@@ -3,6 +3,7 @@ from graphene import Mutation
 from graphene.types.scalars import ID
 
 from users.models import Client, Contact
+
 from api_graphql.data.client.types import ClientNode
 from api_graphql.data.client.inputs import CreateClientInput, RememberPasswordInput
 from api_graphql.data.client.inputs import UpdateClientInput
@@ -40,7 +41,6 @@ class CreateClient(Mutation):
             client.save()
 
         return CreateClient(client=client)
-
 
 class UpdateClient(Mutation):
     """Clase para actualizar clientes"""

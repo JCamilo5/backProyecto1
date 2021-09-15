@@ -83,13 +83,3 @@ class Detail(Model):
         """
 
         return str(self.quantity)
-
-class Report(Model):
-    """
-    Clase que representa el los informes de
-    los Pedidos
-    """
-
-    id_interprise = CharField(max_length=250, help_text='id interprise')
-    report_type = CharField(max_length=250, help_text='tipo de reporte')
-    report_information = CharField(max_length=250, help_text='report_information')
