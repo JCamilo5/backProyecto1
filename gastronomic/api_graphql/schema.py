@@ -29,7 +29,8 @@ from .data.enterprise.mutations import (
 from .data.client.mutations import (
     CreateClient,
     UpdateClient,
-    RememberPasswordClient
+    RememberPasswordClient,
+    ActivateClient
 )
 from .data.courier.mutations import (
     CreateCourier,
@@ -138,6 +139,7 @@ class Mutation(ObjectType):
     create_client = CreateClient.Field()
     update_client = UpdateClient.Field()
     remember_client = RememberPasswordClient.Field()
+    activate_client = ActivateClient.Field()
     
     create_courier = CreateCourier.Field()
     update_courier = UpdateCourier.Field()
