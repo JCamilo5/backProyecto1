@@ -4,7 +4,6 @@ from graphene.types.scalars import ID
 from graphql import GraphQLError
 from graphql_relay.node.node import from_global_id
 
-from users.models import Client, UserProfile
 from products.models import Product
 from api_graphql.data.product.types import ProductNode
 from api_graphql.data.product.inputs import CreateProductInput
@@ -14,7 +13,8 @@ from api_graphql.utils import transform_global_ids
 
 
 # Create your mutations here
-from passlib.hash import django_pbkdf2_sha256 as handler
+
+
 class CreateProduct(Mutation):
     """Clase para crear productos"""
     product = Field(ProductNode)
@@ -26,20 +26,9 @@ class CreateProduct(Mutation):
         # Elimina nulos y transforma el id
         input = delete_attributes_none(**vars(input))
         input = transform_global_ids(**input)
-
-        password=UserProfile.objects.get(email="admin68@example.com").password
-        #h = handler.hash(password)
-        verify= handler.verify("123", password)
-        #print("Password:  ",h)
-        print("Verificacion  ",verify)
-        to_product_id=input.pop('to_product_id')
         
         product = Product.objects.create(**input)
-        if(to_product_id !="-1"):
-            Product.accompaniments.through.objects.create(
-                from_product_id=product.pk,
-                to_product_id=to_product_id
-            )
+
         return CreateProduct(product=product)
 
 

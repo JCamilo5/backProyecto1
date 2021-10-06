@@ -2,7 +2,7 @@ from graphene import ObjectType
 from graphene.relay import Node
 import graphene
 import graphql
-
+import graphql_jwt
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_jwt.mutations import Verify
 
@@ -68,8 +68,7 @@ from .data.image.mutations import (
 
 # Schema definition
 
-from graphql_jwt.decorators import login_required
-from base64 import b64decode
+
 class Query(ObjectType):
     """Endpoint para consultar registros"""
 
@@ -97,19 +96,17 @@ class Query(ObjectType):
     all_products = DjangoFilterConnectionField(ProductNode)
     all_managers = DjangoFilterConnectionField(ManagerNode)
     all_details = DjangoFilterConnectionField(DetailNode)
-    
     all_users = DjangoFilterConnectionField(UserNode)
     all_management = DjangoFilterConnectionField(ManagementNode)
     all_payments = DjangoFilterConnectionField(PaymentNode)
     all_reviews = DjangoFilterConnectionField(ReviewNode)
     all_images = DjangoFilterConnectionField(ImageNode)
 
-    reports = graphene.Field(Reports, token=graphene.ID(required=True),enterprise=graphene.String(), start_date=graphene.DateTime(), final_date=graphene.DateTime())
-    def resolve_reports(self, info: graphql.ResolveInfo,token,enterprise,start_date,final_date):
+    reports = graphene.Field(Reports, enterprise=graphene.String(), start_date=graphene.DateTime(), final_date=graphene.DateTime())
+    def resolve_reports(self, info: graphql.ResolveInfo,enterprise,start_date,final_date):
         query_reports= get_query_report(enterprise,start_date,final_date)
         object_reports= get_data_report(query_reports,start_date,final_date)
         return object_reports
-import graphql_jwt
 
 class Mutation(ObjectType):
     """Endpoint para crear, actualizar y eliminar registros"""

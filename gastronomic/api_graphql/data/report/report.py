@@ -10,15 +10,14 @@ class Report(graphene.ObjectType):
     payment_value = graphene.Int()
 
 class Reports(graphene.ObjectType):
-    token = graphene.String()  
-    enterprise= graphene.ID()       
+    enterprise= graphene.String()       
     start_date = graphene.DateTime()
     final_date = graphene.DateTime()
     report_list = graphene.List(Report)
     total_value = graphene.Float()
 
 def get_query_report(enterprise,start_date,final_date):
-    #fecha actual
+        #fecha actual
         current_date= datetime.now()
         #fecha de cierre del establecimiento obtenida de la bd
         close_date= datetime.now()-timedelta(hours=1)
@@ -27,7 +26,7 @@ def get_query_report(enterprise,start_date,final_date):
             if(close_date>current_date):
                 final_date=final_date-timedelta(days=1)
 
-        query_reports=Payment.objects.filter(delivery__delivery_time__range=[start_date,final_date],delivery__order__details__product__enterprise=enterprise.pk,delivery__status="1").values('delivery__order__details__product__enterprise__name' ,'delivery__delivery_time','payment_value').distinct()
+        query_reports=Payment.objects.filter(delivery__delivery_time__range=[start_date,final_date],delivery__order__details__product__enterprise=enterprise,delivery__status="1").values('delivery__order__details__product__enterprise__name' ,'delivery__delivery_time','payment_value').distinct()
         return query_reports
 def get_data_report(query_reports,start_date,final_date):
     
@@ -35,7 +34,7 @@ def get_data_report(query_reports,start_date,final_date):
     total=0
     try:
         for query_report in query_reports: 
-            report = Report(query_report.get('delivery__delivery_time'),query_report.get('payment_value')) 
+            report = Report(query_report.get('delivery__delivery_time').strftime("%Y-%m-%d %H:%M:%S"),query_report.get('payment_value')) 
             reports_as_obj_list.append(report)
             total=report.payment_value+total
 
@@ -43,4 +42,3 @@ def get_data_report(query_reports,start_date,final_date):
         return object_reports
     except: 
         return None
-
